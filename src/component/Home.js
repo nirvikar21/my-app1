@@ -12,6 +12,7 @@ const Home =(props)=>{
   const [data,setData]=useState([]);
   const [data1,setData1]=useState([]);
   const [pageid,setPageId]=useState([]);
+  const [recordCount,setRecordCount]=useState([]);
   let result
   useEffect( async ()=>{
     console.log("====home");
@@ -19,6 +20,8 @@ const Home =(props)=>{
       result=await result.json();
       setData(result.data);
       setData1(result.data);
+      console.log("=1",result.data.length);
+      setRecordCount(result.data.length);
   },[]);
   function pageData(pageid){
     setPageId(pageid);
@@ -27,6 +30,8 @@ const Home =(props)=>{
       resp.json().then((result)=>{
             setData(result.data);
             setData1(result.data);
+            console.log("=1",result.data.length);
+            setRecordCount(result.data.length);
       })
     })
   }
@@ -35,28 +40,29 @@ const Home =(props)=>{
     if(e==""){
       return;
     }
+    let page ;
+    let url
     if(e=='All'){
-    fetch('https://reqres.in/api/users/?page=1',{
+      page =1
+      url ='https://reqres.in/api/users/?page='+page
+    }else{
+      page = e
+      url ='https://reqres.in/api/users/'+page
+    }
+    fetch(url,{
     }).then((resp)=>{
-      resp.json().then((result)=>{        
-            setData(result.data);
+      resp.json().then((result)=>{   
+            if(result.page==1){
+              setData(result.data);
+            } else{
+              setData([result.data]);
+            }
+            setRecordCount(result.data.length);
+            
       })
     })
-  }else{
-    fetch('https://reqres.in/api/users/'+e,{
-    }).then((resp)=>{
-      resp.json().then((result)=>{        
-            setData([result.data]);
-      })
-    })
-  }
-    fetch('https://reqres.in/api/users/?page=1',{
-    }).then((resp)=>{
-      resp.json().then((result)=>{        
-            setData1(result.data);
-            //console.log()
-      })
-    })
+ 
+    
   }
     return(
       
@@ -98,10 +104,13 @@ const Home =(props)=>{
           )}
       </tbody>
     </Table>
+    { recordCount>=6 ?
 <Pagination>
   <Pagination.Item onClick={() => pageData(1)}>{1}</Pagination.Item>
   <Pagination.Item onClick={() => pageData(2)}>{2}</Pagination.Item>
 </Pagination>
+ :''
+}  
         </div>
       </>
     );
