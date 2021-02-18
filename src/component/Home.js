@@ -32,7 +32,9 @@ const Home =(props)=>{
   }
   function searchData(){
     var e = document.getElementById("uid").value;
-    console.log("ssss",e);
+    if(e==""){
+      return;
+    }
     if(e=='All'){
     fetch('https://reqres.in/api/users/?page=1',{
     }).then((resp)=>{
@@ -66,7 +68,7 @@ const Home =(props)=>{
       <div >
       
         <select id="uid" >
-          <option>Select Name</option>
+          <option value="">Select Name</option>
           <option value="All">All</option>
        { data1.map((item)=>
           <option value={item.id}>{item.first_name+" "+item.last_name}</option>

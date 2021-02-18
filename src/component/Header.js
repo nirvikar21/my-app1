@@ -38,7 +38,6 @@ const Header=()=>{
                 :
                 <Nav className="mr-auto">
                     <Nav.Link ><Link to="/login">Login</Link></Nav.Link>
-                    <Nav.Link ><Link to="/register">Register</Link></Nav.Link>
                     </Nav>
                 }
             </Navbar.Collapse>
