@@ -4,7 +4,9 @@ import{Table} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button'
 import Pagination from 'react-bootstrap/Pagination'
 import Form from 'react-bootstrap/Form'
+import ErrorBoundary from './ErrorBoundary';
 import Header from './Header.js';
+
 
 const Home =(props)=>{
   const user=JSON.parse(localStorage.getItem('user-info'));
@@ -15,7 +17,8 @@ const Home =(props)=>{
   const [recordCount,setRecordCount]=useState([]);
   let result
   useEffect( async ()=>{
-    console.log("====home");
+    
+
       let result=await fetch('https://reqres.in/api/users?page=1');
       result=await result.json();
       setData(result.data);
@@ -30,7 +33,7 @@ const Home =(props)=>{
       resp.json().then((result)=>{
             setData(result.data);
             setData1(result.data);
-            console.log("=1",result.data.length);
+            
             setRecordCount(result.data.length);
       })
     })
@@ -58,16 +61,16 @@ const Home =(props)=>{
               setData([result.data]);
             }
             setRecordCount(result.data.length);
-            
       })
     })
  
     
   }
     return(
-      
       <>
-      <Header/>
+      
+        <Header/>
+      
         <div className="container">
           <h3>Home Page</h3>
           <p>A navigation bar is a navigation header that is placed at the top of the page.</p>

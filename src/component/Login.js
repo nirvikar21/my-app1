@@ -16,8 +16,8 @@ const Login=()=>{
 
   function Login(){
     
-        const emailObj = document.getElementById('email')
-        const passwordObj = document.getElementById('password')
+        const emailObj = document.getElementById('email');
+        const passwordObj = document.getElementById('password');
         if(emailObj.value==''){
           emailObj.classList.add('border-danger');
           
@@ -47,10 +47,10 @@ const Login=()=>{
         body: formBody
         
     }).then((resp)=>{
-      console.error("=======1",resp);
+      
         if(resp.status==200){
           resp.json().then((result)=>{
-            console.log("--=",result.token); 
+            
             if(result.token){
               localStorage.setItem("user-info",JSON.stringify(result));
               history.push('/home');
@@ -69,7 +69,7 @@ const Login=()=>{
     <Header/>
   
   
-      <div className="col-sm-6 offset-sm-3">
+      <div className="col-sm-3 offset-sm-3">
         {error!=undefined?
           <div className="alert alert-danger">
             <strong>Danger!</strong> {error}
