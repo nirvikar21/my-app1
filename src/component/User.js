@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './Header.js';
 import{Table} from 'react-bootstrap';
 import Paging from './Paging.js';
-let result;
+
 let startLim=0
 let endLimit
 class User extends React.Component{
@@ -13,11 +13,11 @@ class User extends React.Component{
             start:0,
             end:10,
             pages:10
-        }
-        
+            
+        }   
     }
     componentDidMount(){
-        let fetchRes = fetch( "https://jsonplaceholder.typicode.com/photos").then((reps)=>{
+        fetch( "https://jsonplaceholder.typicode.com/photos").then((reps)=>{
             reps.json().then((result)=>{
                 //console.log("ssss",result.data)
                 this.setState({data:result})
@@ -35,16 +35,29 @@ class User extends React.Component{
     }
     setPage(id){
         let dropdown= document.getElementById('pages').value  
-  
         this.setState({pages:dropdown,start:0,end:dropdown});
     }
+    searching(id){
+        let search= document.getElementById('Search').value  
+        this.setState({searchStr:search});
+    }
     render(){
-        var arr=this.state.data;
-        let finelData
-        if(arr){
-            finelData = arr.slice(this.state.start,this.state.end)
+        
+        let finelData;
+        let finelData1;
+        if(this.state.searchStr){
+            var arr=this.state.data;
+            if(arr){
+                finelData1 =arr.find(arr => arr.title === this.state.searchStr)
+                finelData=[finelData1];
+                console.log("search==",finelData);
+            }
+        }else{
+            var arr=this.state.data;
+            if(arr){
+                finelData = arr.slice(this.state.start,this.state.end)
+            }
         }
-        console.log('====!',finelData,arr,this.state.start,this.state.end)
         return(
             <div>
                 <Header/>
@@ -57,6 +70,7 @@ class User extends React.Component{
                         <option value="200">200</option>
                         <option value="300">300</option>
                     </select>
+                    <input type="text" id="Search" /><button onClick={()=>this.searching()}>Search</button>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -81,7 +95,9 @@ class User extends React.Component{
                             
                         </tbody>
                     </Table>
+                    {this.state.searchStr!=""?
                     <Paging data={{totalrecord:5000,perPageRecord:this.state.pages,Endlimit:this.state.end,changePage:this.changePage.bind(this)}} />
+                    :''}
                 </div>
             </div>
         )
