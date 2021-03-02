@@ -12,26 +12,24 @@ class User extends React.Component{
             data:'',
             start:0,
             end:10,
-            pages:10
-            
+            pages:10,
+            TotalRecords:5000
         }   
     }
     componentDidMount(){
         fetch( "https://jsonplaceholder.typicode.com/photos").then((reps)=>{
             reps.json().then((result)=>{
-                //console.log("ssss",result.data)
                 this.setState({data:result})
-                console.log("===",this.state.data);
             })
         })     
     }
     changePage(pageData){
       
         this.setState({start:pageData.startLimit,end:pageData.endLimit})
-        console.log("!!!",this.state.start,this.state.end);
+        
         startLim=pageData.startLimit;
         endLimit=pageData.endLimit;
-        console.log("====! change",startLim)
+        
     }
     setPage(id){
         let dropdown= document.getElementById('pages').value  
@@ -39,18 +37,18 @@ class User extends React.Component{
     }
     searching(id){
         let search= document.getElementById('Search').value  
-        this.setState({searchStr:search});
+        this.setState({searchStr:search,TotalRecords:1});
     }
     render(){
-        
         let finelData;
         let finelData1;
+        
         if(this.state.searchStr){
             var arr=this.state.data;
             if(arr){
                 finelData1 =arr.find(arr => arr.title === this.state.searchStr)
                 finelData=[finelData1];
-                console.log("search==",finelData);
+                
             }
         }else{
             var arr=this.state.data;
@@ -58,6 +56,7 @@ class User extends React.Component{
                 finelData = arr.slice(this.state.start,this.state.end)
             }
         }
+        
         return(
             <div>
                 <Header/>
@@ -95,8 +94,8 @@ class User extends React.Component{
                             
                         </tbody>
                     </Table>
-                    {this.state.searchStr!=""?
-                    <Paging data={{totalrecord:5000,perPageRecord:this.state.pages,Endlimit:this.state.end,changePage:this.changePage.bind(this)}} />
+                    {this.state.TotalRecords==5000?
+                    <Paging data={{totalrecord:this.state.TotalRecords,perPageRecord:this.state.pages,Endlimit:this.state.end,changePage:this.changePage.bind(this)}} />
                     :''}
                 </div>
             </div>
